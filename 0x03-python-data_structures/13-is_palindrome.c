@@ -1,41 +1,65 @@
 #include "lists.h"
-
+#include <stddef.h>
 /**
- * is_palindrome - checks if a singly linked list is a palindrome.
- * @head: A pointer to the head of alinked list
- * Return:0 if it is not a palindrome, 1 if it is a palindrome
+ * @*reverse_listint - Reverses a linked list in pladce
+ * @head: Pointer to a pointer pointing to the first item in the list
+ * Return: The new head of the reversed list
  */
-int is_palindrome(listint_t **head)
-{
-	listint_t *temp = *head;
+listint_t *reverse_listint(listint_t **head);
+int is_palindrome(listint_t **head);
 
-	return (check_pal(&temp, *head));
+listint_t *reverse_listint(listint_t **head)
+{
+	listint_t *node = *head, *next, *prev = NULL;
+
+	while (node)
+	{
+		next = node->next;
+		node->next = prev;
+		prev = node;
+		node = next;
+	}
+	*head = prev;
+	return (*head);
 }
 
 /**
- * check_pal - helper function to check if the list is a palindrome
- * @left: pointer to the left end of the list
- * @right: pointer to the right end of the list
- * Return: 1 if is palindrome 0 if not
+ * is_palindrome - Checks if a singly linked list is a palindrome.
+ * reverse_listint - Reverses a linked list in pladce
+ * @head: A pointer to the head of the linked list
+ * Return: If the linked list is not a palindrome - 0.
+ * If the linked list is a palindrome - 1.
  */
-int check_pal(listint_t **left, listint_t *right)
+
+int is_palindrome(listint_t **head)
 {
-	int is_pal;
+	listint_t *tmp, *rev, *mid;
+	size_t size = 0, i;
 
-	/* base case: end of list */
-	if (right == NULL)
+	if (*head == NULL || (*head)->next == NULL)
 		return (1);
-
-	/* check if the rest of the list is a palindrome */
-	is_pal = check_pal(left, right->next);
-
-	if (is_pal == 0)
+	tmp = *head;
+	while (tmp)
+	{
+		size++;
+		tmp = tmp->next;
+	}
+	tmp = *head;
+	for (i = 0; i < (size / 2) - 1; i++)
+		tmp = tmp->next;
+	if ((size % 2) == 0 && tmp->n != tmp->next->n)
 		return (0);
-
-	/* check if the current elements are the same */
-	is_pal = ((*left)->n == right->n);
-	/* move left pointer to the next element */
-	*left = (*left)->next;
-
-	return (is_pal);
+	tmp = tmp->next->next;
+	rev = reverse_listint(&tmp);
+	mid = rev;
+	tmp = *head;
+	while (rev)
+	{
+		if (tmp->n != rev->n)
+			return (0);
+		tmp = tmp->next;
+		rev = rev->next;
+	}
+	reverse_listint(&mid);
+	return (1);
 }
