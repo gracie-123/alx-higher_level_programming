@@ -1,7 +1,10 @@
 #!/usr/bin/python3
-# 0-square_matrix_simple.py
+
+""" function computes the square value of all integers in a matrix """
 
 
 def square_matrix_simple(matrix=[]):
- """Compute the square value of all integers of a matrix."""
-    return ([[col * col for col in row] for row in matrix])
+    new_matrix = []
+    for x in matrix:
+        new_matrix.append(list(map(lambda x: x ** 2, x)))
+    return new_matrix
