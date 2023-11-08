@@ -8,4 +8,3 @@ def multiply_by_2(a_dictionary):
         dict.update({i: a_dictionary.get(i) * 2})
 
     return dict
-
