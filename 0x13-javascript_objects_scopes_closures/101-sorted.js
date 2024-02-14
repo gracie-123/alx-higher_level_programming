@@ -1,14 +1,11 @@
 #!/usr/bin/node
-const importDict = require('./101-data');
-
-const _dict = importDict.dict;
+const dict = require('./101-data.js').dict;
 const newDict = {};
-
-for (const userId in _dict) {
-  const occurrences = _dict[userId];
-  if (!newDict[occurrences]) {
-    newDict[occurrences] = [];
+for (const key in dict) {
+  if (newDict[dict[key]] === undefined) {
+    newDict[dict[key]] = [key];
+  } else {
+    newDict[dict[key]].push(key);
   }
-  newDict[occurrences].push(userId);
 }
 console.log(newDict);
