@@ -1,20 +1,23 @@
 #!/usr/bin/node
+// Searches for the second biggest integer in the list of arguments
 
-/* searches the second biggest integer in the list of arguments */
-const args = process.argv;
-if (args.length <= 3) {
-  console.log(0);
+function convertToNumber (element) {
+  intArray.push(parseInt(element));
 }
-const myArgs = [];
-if (args.length > 3) {
-  for (let i = 0; args[i]; i++) {
-    if (!(isNaN(args[i]))) {
-      myArgs.push(args[i]);
-    }
+
+const arrayLen = process.argv.length;
+const newArray = [];
+const intArray = [];
+let max2 = 0;
+
+if (process.argv.length <= 3) {
+  console.log('0');
+} else {
+  for (let i = 2; i < arrayLen; i++) {
+    newArray.push(process.argv[i]);
   }
-  /* sort array to return items in ascending order */
-  myArgs.sort(function (a, b) { return a - b; });
-  /* slice the array to ge last two items, returning the second biggest */
-  const secBig = myArgs.slice(-2, -1);
-  console.log(secBig[0]);
+  newArray.forEach(convertToNumber);
+  intArray.sort((a, b) => a - b);
+  max2 = intArray[intArray.length - 2];
+  console.log(max2);
 }
