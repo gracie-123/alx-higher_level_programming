@@ -1,24 +1,34 @@
 #!/usr/bin/python3
-"""script to list all state objects using sqlalchemy
+
+"""
+Module to perfom simple queries on the model_state model
+using and ORM - SQLAlchemy
 """
 from model_state import Base, State
-
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-from sqlalchemy import (create_engine)
-
 import sys
 
 
-if __name__ == '__main__':
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
-                           .format(sys.argv[1], sys.argv[2], sys.argv[3]))
-    # create custom session object class from database engine
-    Session = sessionmaker(bind=engine)
-    # create instance of new custom session class
-    session = Session()
-    state = session.query(State).order_by(State.id).first()
-    if (state is not None):
-        print('{}: {}'.format(state.id, state.name))
-    else:
-        print('Nothing')
+def connect_and_query(user: str, passwd: str, dbase: str) -> None:
+
+    """
+    Connect to the database and make queries using ORM
+    """
+    try:
+        engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
+                               .format(user, passwd, dbase))
+        Session = sessionmaker(bind=engine)
+        state_session = Session()
+        states = state_session.query(State).order_by(State.id).first()
+
+        if states is not None:
+            print(states)
+        else:
+            print("Nothing")
+    except Exception as e:
+        return e
+
+
+if __name__ == "__main__":
+    connect_and_query(sys.argv[1], sys.argv[2], sys.argv[3])
