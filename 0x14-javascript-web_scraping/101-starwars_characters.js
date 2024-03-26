@@ -1,25 +1,21 @@
 #!/usr/bin/node
-
+// get all star wars chars in the right order
+const args = (process.argv);
 const request = require('request');
-const id = process.argv[2];
-const url = `https://swapi-api.alx-tools.com/api/films/${id}`;
-
-request.get(url, (error, response, body) => {
-  if (error) {
-    console.log(error);
-  } else {
-    const content = JSON.parse(body);
-    const characters = content.characters;
-    // console.log(characters);
-    for (const character of characters) {
-      request.get(character, (error, response, body) => {
-        if (error) {
-          console.log(error);
-        } else {
-          const names = JSON.parse(body);
-          console.log(names.name);
-        }
-      });
-    }
+const url = 'https://swapi-api.hbtn.io/api/films/' + args[2];
+request(url, function (error, response, body) {
+  if (!error) {
+    const chars = JSON.parse(body).characters;
+    printIt(chars, 0);
   }
 });
+function printIt (chars, i) {
+  request(chars[i], function (error, response, body) {
+    if (!error) {
+      console.log(JSON.parse(body).name);
+      if (i + 1 < chars.length) {
+        printIt(chars, i + 1);
+      }
+    }
+  });
+}
